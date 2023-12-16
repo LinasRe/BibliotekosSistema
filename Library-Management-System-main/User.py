@@ -2,7 +2,7 @@ import mysql.connector
 import Tables
         
 #--------------------------------------------------------------------------------------------------------------------------------        
-def displayUser():
+def display_user():
     print()
     print("User Records: \n")
     mycursor.execute("""SELECT UserRecord.UserID,UserRecord.UserName,UserRecord.Password,BookRecord.BookName,BookRecord.BookID
@@ -12,23 +12,23 @@ def displayUser():
     row_no=0
     for rows in records :
         row_no+=1
-        print("******************************","Row no.",row_no,"******************************")
+        print("******************************","Row no.",row_no,"******************************") #Perkelti i konstantas, del tvarkos ir skirtingu dydziu isvengimo
         print("\t             UserID: ", rows[0])
         print("\t           UserName: ", rows[1])
         print("\t           Password: ", rows[2])
         print("\t        Book Issued: ", rows[3])
         print("\t         Its BookID: ", rows[4])
         print()
-    x=input("Press any key to return to the User Menu")
-    return
+        print("Press any key to return to the User Menu")
+    
 #--------------------------------------------------------------------------------------------------------------------------------             
-def insertUser():
+def insert_user():
     while True :
         data=()
         print()
-        UserID=input(" Enter UserID: ")
-        UserName=input(" Enter User Name: ")
-        Password=input(" Enter Password to be Set: ")
+        user_id=input(" Enter UserID: ")
+        username=input(" Enter User Name: ")
+        password=input(" Enter Password to be Set: ")
         data=(UserID, UserName, Password,None)
         query="INSERT INTO UserRecord VALUES (%s, %s, %s,%s)"
         mycursor.execute(query,data)
@@ -37,29 +37,28 @@ def insertUser():
         ch=input("Do you wish to do add more Users?[Yes/No] : ")
         if ch=="no" or ch=="No" or ch=="NO":
             break
-    return
 #--------------------------------------------------------------------------------------------------------------------------------             
-def deleteUser():
+def delete_user():
     while True:
         print()
-        UserID=input(" Enter UserID whose details to be deleted : ")  
+        user_id=input(" Enter UserID whose details to be deleted : ")  
         mycursor.execute("DELETE from UserRecord where UserID = {0} ".format("\'"+UserID+"\'"))
         mydb.commit()
         ch=input("Do you wish to delete more Users?[Yes/No] : ")
         if ch=="no" or ch=="No" or ch=="NO":
             break
-    return
+    
 #--------------------------------------------------------------------------------------------------------------------------------         
-def searchUser():
+def search_user():
     while True:
         print()
-        Search=input(" Enter UserID to be Searched: ")  
+        search=input(" Enter UserID to be Searched: ")  
         mycursor.execute("SELECT UserID, UserName, Password , BookName, UserRecord.BookID\
                     FROM Library.UserRecord LEFT JOIN Library.BookRecord\
                     ON BookRecord.BookID=UserRecord.BookID\
                     WHERE UserRecord.UserID={0}".format("\'"+Search+"\'"))
         records=mycursor.fetchall()
-        row_no=0
+        row_no=0 
         if records:
             for rows in records :
                 row_no+=1
@@ -76,15 +75,15 @@ def searchUser():
         ch=input("Do you wish to Search more Users?[Yes/No] : ")
         if ch=="no" or ch=="No" or ch=="NO":
             break
-    return
+    
 #--------------------------------------------------------------------------------------------------------------------------------     
-def updateUser():
+def update_user():
     while True:
         print()
         data=()
-        UserID=input(" Enter User ID for whose details need to be updated : ")
-        UserName=input(" Enter Updated User Name : ")
-        Password=input(" Enter Updated Password : ")
+        user_id=input(" Enter User ID for whose details need to be updated : ")
+        username=input(" Enter Updated User Name : ")
+        password=input(" Enter Updated Password : ")
         query="UPDATE UserRecord SET Username = %s, Password = %s WHERE UserID=%s"
         data=(UserName,Password,UserID)
         mycursor.execute(query,data)
